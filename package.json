@@ -7,12 +7,46 @@
   "scripts": {
     "start": "env -u ELECTRON_RUN_AS_NODE electron .",
     "test": "node --test",
-    "test:watch": "node --test --watch"
+    "test:watch": "node --test --watch",
+    "build:mac": "electron-builder --mac dir"
   },
   "devDependencies": {
-    "electron": "^37.2.6"
+    "electron": "^37.2.6",
+    "electron-builder": "^26.0.12"
   },
   "dependencies": {
     "sharp": "^0.34.3"
+  },
+  "build": {
+    "appId": "com.pngtojpeg.drop",
+    "productName": "PNG to JPEG Drop",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": ["dir"],
+      "category": "public.app-category.graphics-design",
+      "extendInfo": {
+        "CFBundleDocumentTypes": [
+          {
+            "CFBundleTypeName": "PNG Image",
+            "CFBundleTypeRole": "Viewer",
+            "LSHandlerRank": "Alternate",
+            "LSItemContentTypes": ["public.png"],
+            "CFBundleTypeExtensions": ["png"]
+          },
+          {
+            "CFBundleTypeName": "Folder",
+            "CFBundleTypeRole": "Viewer",
+            "LSHandlerRank": "Alternate",
+            "LSItemContentTypes": ["public.folder"]
+          }
+        ]
+      }
+    }
   }
 }

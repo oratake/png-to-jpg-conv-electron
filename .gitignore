@@ -2,4 +2,6 @@ node_modules/
 .npm-cache/
 .electron-cache/
 .electron-user-data/
+release/
+.build-home/
 .DS_Store

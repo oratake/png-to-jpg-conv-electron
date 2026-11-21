@@ -2,23 +2,34 @@
 
 Node.js + Electronで動く、ドラッグ＆ドロップ式のPNG→JPEG変換アプリです。AppleScriptやAutomatorのワークフロー編集は不要です。PNGをアプリのウィンドウへドロップすると、JPEGを元PNGと同じフォルダに作成します。元PNGは削除しません。
 
-## 起動方法
+## macOSアプリの作成とDock登録
 
-macOSにNode.js 20以上をインストール後、このフォルダで実行します。
+このプロジェクトと同じMac上で`.app`をビルドします。
 
 ```sh
 npm install
-npm start
+npm run build:mac
 ```
+
+`release/mac-arm64/PNG to JPEG Drop.app`が生成されます（Intel Macでは出力先のアーキテクチャ名が異なります）。`.app`にはPNGとフォルダのドロップを受け付けるmacOS書類タイプを登録しています。Dockアイコンへのドロップは、起動中の`open-file`イベントに加えて、起動時／二重起動時のコマンドライン引数も補助経路として受け取り変換します。未起動時の初期設定は品質85、サブフォルダ探索なしです。
+
+### ユーザーが行うインストール操作
+
+1. `release`内の`PNG to JPEG Drop.app`をFinderで`アプリケーション`フォルダ（またはホーム内の`~/Applications`）へ移動します。このビルド環境ではDockへの未起動PNGドロップ、起動中のPNGドロップ、未起動のフォルダドロップをLaunch Services経由で確認しています。
+2. 移動後にアプリを一度起動します。未署名ビルドのためmacOSが警告した場合は、Finderでアプリをcontrol-clickして「開く」を選びます。
+3. 起動したアプリをDockに残すには、Dockアイコンを右クリックし「オプション」→「Dockに追加」を選びます。
+4. PNGまたはフォルダをそのDockアイコンへドロップします。
+
+このプロジェクト自身が`/Applications`やDockを変更することはありません。Apple Developer署名・公証は設定していないため、Gatekeeperの警告が出る場合があります。第三者配布するにはDeveloper ID署名と公証が別途必要です。
 
 npmキャッシュの権限エラーが出る環境では、プロジェクト内キャッシュを使います（macOS/Linux）。
 
 ```sh
 electron_config_cache="$PWD/.electron-cache" npm install --cache .npm-cache
-npm start
+npm run build:mac
 ```
 
-起動したウィンドウへPNGファイル、フォルダ、複数のファイル／フォルダをFinderからドロップしてください。初回起動時のみターミナルから`npm start`します。テストは`npm test`で実行できます。
+開発中は`npm start`でウィンドウ版を起動できます。テストは`npm test`で実行できます。
 
 ## 変換仕様
 
@@ -40,4 +51,6 @@ MozJPEGは、画質を保ちながらJPEGをより小さくすることを狙っ
 
 ## 注意点
 
-このプロジェクトでは、設定保存、進捗／キャンセル、容量チェック、ログ、エイリアス判定は対象外です。Finderのタグや不可視属性に基づく除外はしません。ネットワークドライブや書き込み権限のないフォルダでは変換失敗として表示されます。
+このプロジェクトでは、設定保存、進捗／キャンセル、容量チェック、エイリアス判定は対象外です。Finderのタグや不可視属性に基づく除外はしません。ネットワークドライブや書き込み権限のないフォルダでは変換失敗として表示されます。
+
+Dockドロップを受信しない場合の診断ログは`~/Library/Application Support/png-to-jpeg-drop/dock-drop-diagnostic.log`に追記されます。入力ファイルのパスや名前は記録せず、`open-file-event`、引数の候補数、変換結果の件数だけを記録します。
