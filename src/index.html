@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PNG to JPEG</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>PNG → JPEG</h1>
+    <div id="drop" tabindex="0" role="button" aria-label="PNGファイルまたはフォルダをドロップ">
+      <div class="icon">⇩</div>
+      <strong>PNGファイルまたはフォルダをここへドロップ</strong>
+      <p>複数のファイル・フォルダをまとめて変換できます</p>
+    </div>
+    <section class="settings">
+      <label for="quality">JPEG品質 <output id="qualityValue">85</output></label>
+      <input id="quality" type="range" min="1" max="100" value="85">
+      <label class="check"><input id="recursive" type="checkbox"> サブフォルダも含める</label>
+    </section>
+    <p id="status" aria-live="polite">PNGをドロップしてください。変換後のJPEGは元画像と同じフォルダに保存されます。</p>
+    <ol id="errors"></ol>
+  </main>
+  <script src="renderer.js"></script>
+</body>
+</html>
