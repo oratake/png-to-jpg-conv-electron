@@ -1,6 +1,6 @@
 # PNG to JPEG Drop
 
-Node.js + Electronで動く、ドラッグ＆ドロップ式のPNG→JPEG変換アプリです。AppleScriptやAutomatorのワークフロー編集は不要です。PNGをアプリのウィンドウへドロップすると、JPEGを元PNGと同じフォルダに作成します。元PNGは削除しません。
+Node.js + Electronで動く、ドラッグ＆ドロップ式のPNG→JPEG変換アプリです。PNGをアプリのウィンドウへドロップすると、JPEGを元PNGと同じフォルダに作成します。元PNGは削除しません。
 
 ## macOSアプリの作成とDock登録
 
